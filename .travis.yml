@@ -3,7 +3,7 @@ services:
   - docker
 
 before_install: 
-  - docker build -t pbernard/fibonacci-app -f ./client/Dockerfile.dev .
+  - docker build -t pbernard/fibonacci-app -f ./client/Dockerfile.dev ./client
 
 script: 
   - docker run pbernard/fibonacci-app npm run test -- --coverage
