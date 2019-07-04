@@ -23,3 +23,15 @@ after_success:
   - docker push pbernard/fibonacci-app-server
   - docker push pbernard/fibonacci-app-worker
 
+deploy:
+  provider: elasticbeanstalk
+  region: eu-west-1
+  app: fibonacci-app
+  env: FibonacciApp-env
+  bucket_name: elasticbeanstalk-eu-west-1-112643903764
+  bucket_path: fibonacci-app
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: 
+    secure: "$AWS_SECRET"
