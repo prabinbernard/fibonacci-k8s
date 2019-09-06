@@ -11,3 +11,17 @@ before_install:
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud components update kubectl
   - gcloud auth activate-service-account --key-file service-account.json
+  - gcloud config set project fibonacci-k8s-252110
+  - gcloud config set compute/zone europe-west2-a
+  - gcloud container clusters get-credentials fibonacci-cluster
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t pbernard/fibonacci-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run pbernard/fibonacci-test npm run test -- --coverage
+
+deploy:
+  provider: script
+  script: bash ./deploy.sh
+  on:
+    branch: master
